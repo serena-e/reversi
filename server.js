@@ -6,7 +6,7 @@ var http = require('http');
 
 /* Assume that we are running on Heroku */
 var port = process.env.PORT;
-var directory = __dirname + 'public';
+var directory = __dirname + '/public';
 
 /* If we aren't on Heroku, then we need to readjust the port and directory info and we know that because a port won't be set */
 if(typeof port == 'undefined' || !port){
