@@ -1,0 +1,26 @@
+{
+  "name": "reversi",
+  "version": "1.0.0",
+  "description": "Web app version of reversi game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serena-e/reversi.git"
+  },
+  "keywords": [
+    "reversi"
+  ],
+  "author": "Serena Epstein",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/serena-e/reversi/issues"
+  },
+  "homepage": "https://github.com/serena-e/reversi#readme",
+  "dependencies": {
+    "node-static": "^0.7.11",
+    "socket.io": "^2.2.0"
+  }
+}
