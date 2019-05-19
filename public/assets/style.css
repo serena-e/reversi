@@ -1,0 +1,74 @@
+/* GENERAL STYLES */
+
+body {
+  font-family: 'Nunito', sans-serif;
+background-image: linear-gradient(130deg, rgba(255,0,0,0), rgba(178,235,242,0.8));
+background-size: 1500px 1500px;
+}
+
+/* INDEX */
+.btn-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 24px;
+    line-height: 1.42857;
+    display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 5px #ccc;
+}
+
+.btn-circle-white {
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #eee;
+}
+
+.btn-circle-white:hover {
+  background-color: #fafafa;
+  color: #666;
+  border: 1px solid #eee;
+}
+
+.btn-circle-black {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+.btn-circle-black:hover {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+.index-title {
+  font-family: 'Sirin Stencil', cursive;
+  text-transform: uppercase;
+  font-size: 5em;
+  padding: 20px;
+  color: #333;
+}
+
+.btn-index-play {
+  background-color: #009faf;
+  border: none;
+}
+
+.btn-index-play:hover {
+  background-color: #007f8c;
+  border: none;
+}
+
+/* ABOUT */
+.header-row {
+  background-color: #007f8c;
+}
+
+.header-row h1{
+  color: #fff;
+}
