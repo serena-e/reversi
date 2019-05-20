@@ -22,6 +22,10 @@ background-size: 1500px 1500px;
   box-shadow: 2px 2px 5px #ccc;
 }
 
+.btn-circle:hover {
+  box-shadow: 4px 4px 10px #ccc;
+}
+
 .btn-circle-white {
   background-color: #fff;
   color: #666;
