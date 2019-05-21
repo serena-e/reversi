@@ -82,7 +82,7 @@ else {
 }
 
 /* Manage the message that a new player has joined */
-var newHTML = '<p>'+payload.username+' just entered the lobby</p>';
+var newHTML = '<p><i>'+payload.username+' just entered the lobby</i></p>';
 var newNode = $(newHTML);
 newNode.hide();
 $('#messages').append(newNode);
@@ -110,7 +110,7 @@ if(dom_elements.length != 0){
 }
 
 /* Manage the message that a player has left */
-var newHTML = '<p>'+payload.username+' has left the lobby</p>';
+var newHTML = '<p><i>'+payload.username+' has left the lobby</i></p>';
 var newNode = $(newHTML);
 newNode.hide();
 $('#messages').append(newNode);
