@@ -81,7 +81,7 @@ else {
   dom_elements.slideDown(1000);
 }
 
-/* Manage the message that a new player has joined */
+/* Manage the message that a new player has joined ... added italics*/
 var newHTML = '<p><i>'+payload.username+' just entered the lobby</i></p>';
 var newNode = $(newHTML);
 newNode.hide();
@@ -109,7 +109,7 @@ if(dom_elements.length != 0){
   dom_elements.slideUp(1000);
 }
 
-/* Manage the message that a player has left */
+/* Manage the message that a player has left ... added italics */
 var newHTML = '<p><i>'+payload.username+' has left the lobby</i></p>';
 var newNode = $(newHTML);
 newNode.hide();
