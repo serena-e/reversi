@@ -76,3 +76,23 @@ background-size: 1500px 1500px;
 .header-row h1{
   color: #fff;
 }
+
+/* GAME */
+table#game_board {
+  margin: auto;
+  border: 10px solid #29cece;
+}
+
+table#game_board td {
+padding: 5px;
+border: 1px solid #ccc;
+}
+
+#messages p {
+  margin: 5px;
+}
+
+td.hovered_over:hover {
+  background-color: #29cece;
+  background-size: 100% 100%;
+}

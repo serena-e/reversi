@@ -1,0 +1,114 @@
+body {
+}
+p {
+font-family: arial;
+font-size: 0.8em;
+color:#333;
+}
+
+a {
+  color: #29cece;
+}
+
+.tokens {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.tokens-flip {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.token-white {
+  width: 64px;
+  margin: 20px;
+}
+
+.token-white .st0{fill:#FCFCFC;}
+.token-white .st1{fill:none;stroke:#FFFFFF;stroke-width:2.16;stroke-miterlimit:10;}
+.token-white .st2{fill:none;}
+.token-white .st3{fill:#269DC6;}
+.token-white .st4{fill:#B2EBF2;}
+.token-white .st5{fill:#CDF4F7;}
+
+.token-black {
+  width: 64px;
+  margin: 20px;
+}
+
+.token-black .st0{fill:#555555;}
+.token-black .st1{fill:none;stroke:#606060;stroke-width:2.16;stroke-miterlimit:10;}
+.token-black .st2{fill:none;}
+.token-black .st3{fill:#FF6D66;}
+.token-black .st4{fill:#FF8A80;}
+
+.token-empty {
+  width: 64px;
+  margin: 20px;
+  opacity: 0;
+}
+
+/* CSS FLIP (Source: https://www.w3schools.com/howto/howto_css_flip_card.asp) The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  width: 64px;
+  height: 64px;
+  perspective: 1000;
+  -webkit-perspective: 1000;
+-moz-perspective: 1000;
+-o-perspective: 1000;
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  -webkit-transition: 0.5s;
+-webkit-transform-style: preserve-3d;
+-moz-transition: 0.5s;
+-moz-transform-style: preserve-3d;
+-o-transition: 0.5s;
+-o-transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+-moz-transform: rotateY(180deg);
+-o-transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-o-backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  color: black;
+  transform: rotateY(180deg);
+}
+
+footer {
+  padding-top: 50px;
+  font-family: arial;
+  font-size: 0.8em;
+  color:#ccc;
+  text-align: center;
+}
