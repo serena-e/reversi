@@ -7,6 +7,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
     <!-- Custom CSS -->
     <link rel='stylesheet' type = 'text/css' href='assets/style.css'>
 
@@ -14,37 +16,49 @@
     <link href='https://fonts.googleapis.com/css?family=Gugi|Sirin+Stencil|Nunito|Nunito+Sans&display=swap' rel='stylesheet'>
 
 
-    <title>Reversi</title>
+    <title>Reversea</title>
   </head>
   <body>
+    <div class='wrapper'>
     <div class='container-fluid text-center'>
       <div class='row'>
         <div class='offset-2 col text-center'>
-          <h3 id='my_color'></h3>
+          <h1 class='game-title'>Revers<span class='title-1'>i</span><span class='title-2'>e</span><span class='title-3'>a</span></h1>
         </div>
         <div class='col-2'>
+          <nav class="navbar navbar-dark">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#chat" aria-controls="chat" aria-expanded="false" aria-label="Toggle chat">
+          <i class='fas fa-comment'></i>
+          </button>
           <div id='quit'></div>
+        </nav>
+
+
         </div>
       </div>
-    <div class='row'>
-      <div class='col'>
-        <span class='align-middle' id='whitesum'></span>
-          <!-- White SVG token -->
-          <img src='assets/images/whitetoken.svg' alt='white token' />
-          <!-- Black SVG token -->
-          <img src='assets/images/blacktoken.svg' alt='black token' />
-          <span class='align-middle' id='blacksum'></span>
+      <div class='row score justify-content-center'>
+            <div class='col-md-5 text-right'>
+          <span class='align-middle' id='whitesum'></span>
+            <!-- White SVG token -->
+            <img src='assets/images/whitetoken.svg' alt='white token' />
+            <!-- Black SVG token -->
+            <img src='assets/images/blacktoken.svg' class='bigger' alt='black token' />
+            <span class='align-middle' id='blacksum'></span>
+            </div>
+            <div class='col-md-6 text-left'>
+            <h3 id='my_color'></h3>
+          </div>
+          </div>
+      </div>
+        <div class='row'>
+          <div class='col' id='game_over'>
+          </div>
+        </div>
 
-</div>
-</div>
+<div class='row main-content'>
 
-<div class='row'>
-  <div class='col' id='game_over'>
-  </div>
-</div>
-
-<div class='row'>
   <div class='col'>
+
     <table id='game_board'>
       <tr>
         <td id='0_0'></td>
@@ -128,26 +142,39 @@
       </tr>
     </table>
   </div>
+
+  <div class='col-sm-4 text-left collapse' id='chat'>
+<div class='row'>
+  <div class='col-12'>
+<h2>Chat</h2>
+<form class='form-inline' onsubmit='send_message(); reset(); return false;'>
+    <label for='send_message_holder' class='col-form-label sr-only'>Enter message:</label>
+    <input class='form-control mx-audo w-50' type='text' value='' id='send_message_holder' placeholder='Enter your chat message' autocomplete='off' />
+  <button type='submit' class='btn btn-default btn-primary chat-btn'><i class='fas fa-fish'></i>Send</button>
+</form>
+</div>
+  <div class='col-12 text-left'>
+    <div id='messages'></div>
+  </div>
+</div>
 </div>
 
 
-      <div class='row'>
-        <div class='col text-left'>
-          <h2>Messages</h2>
-          <form class='form-inline' onsubmit='send_message(); reset(); return false;'>
-              <label for='send_message_holder' class='col-form-label sr-only'>Enter message:</label>
-              <input class='form-control mx-audo w-75' type='text' value='' id='send_message_holder' placeholder='Enter your chat message' autocomplete='off' />
-            <button type='submit' class='btn btn-default btn-primary'>Send</button>
-          </form>
-        </div>
-      </div>
-      <div class='row'>
-        <div class='col text-left'>
-          <div id='messages'></div>
-        </div>
-      </div>
+</div>
 
-    </div>
+    <ul class="bg-bubbles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

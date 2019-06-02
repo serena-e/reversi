@@ -86,7 +86,7 @@ io.sockets.on('connection', function (socket){
     log('\'join_room\' command'+JSON.stringify(payload));
 
   /* Check that the client sent a payload */
-    if('undefined' === typeof payload || !payload){
+    if(('undefined' === typeof payload) || !payload){
       var error_message = 'join_room had no payload, command aborted';
       log(error_message);
       socket.emit('join_room_response', {
@@ -97,7 +97,7 @@ io.sockets.on('connection', function (socket){
       }
 /* Check that the payload has a room to join */
     var room = payload.room;
-    if('undefined' === typeof room || !room){
+    if(('undefined' === typeof room) || !room){
       var error_message = 'join_room didn\'t specify a room, command aborted';
       log(error_message);
       socket.emit('join_room_response', {
@@ -109,7 +109,7 @@ io.sockets.on('connection', function (socket){
 
 /* Check that a username has been provided */
     var username = payload.username;
-    if('undefined' === typeof username || !username){
+    if(('undefined' === typeof username) || !username){
       var error_message = 'join_room didn\'t specify a username, command aborted';
       log(error_message);
       socket.emit('join_room_response', {
@@ -155,7 +155,7 @@ io.sockets.on('connection', function (socket){
 
       log('join_room_success');
 
-      if (room !== 'lobby'){
+      if(room !== 'lobby'){
         send_game_update(socket,room,'initial update');
       }
 });
@@ -196,7 +196,7 @@ socket.on('disconnect',function(){
  */
  socket.on('send_message', function(payload){
    log('server received a command', 'send_message', payload);
-   if('undefined' === typeof payload || !payload){
+   if(('undefined' === typeof payload) || !payload){
      var error_message = 'send_message had no payload, command aborted';
      log(error_message);
      socket.emit('send_message_response', {
@@ -207,7 +207,7 @@ socket.on('disconnect',function(){
      }
 
    var room = payload.room;
-   if('undefined' === typeof room || !room){
+   if(('undefined' === typeof room) || !room){
      var error_message = 'send_message didn\'t specify a room, command aborted';
      log(error_message);
      socket.emit('send_message_response', {
@@ -218,7 +218,7 @@ socket.on('disconnect',function(){
      }
 
    var username = players[socket.id].username;
-   if('undefined' === typeof username || !username){
+   if(('undefined' === typeof username) || !username){
      var error_message = 'send_message didn\'t specify a username, command aborted';
      log(error_message);
      socket.emit('send_message_response', {
@@ -229,7 +229,7 @@ socket.on('disconnect',function(){
      }
 
      var message = payload.message;
-     if('undefined' === typeof message || !message){
+     if(('undefined' === typeof message) || !message){
        var error_message = 'send_message didn\'t specify a message, command aborted';
        log(error_message);
        socket.emit('send_message_response', {
@@ -245,7 +245,7 @@ socket.on('disconnect',function(){
                         message: message
                       };
     io.in(room).emit('send_message_response',success_data);
-    log('Message sent to room ' + room + ' by ' + username);
+    log('Message sent to room ' + room + ' by ' + username + 'success_data:'+JSON.stringify(success_data));
   });
 
 
@@ -280,7 +280,7 @@ or
 
 /* Check to make sure a payload was sent */
 
-   if('undefined' === typeof payload || !payload){
+   if(('undefined' === typeof payload) || !payload){
      var error_message = 'invite had no payload, command aborted';
      log(error_message);
      socket.emit('invite_response', {
@@ -292,7 +292,7 @@ or
 
 /* Check that the message can be traced to a username */
    var username = players[socket.id].username;
-   if('undefined' === typeof username || !username){
+   if(('undefined' === typeof username) || !username){
      var error_message = 'invite can\'t identify who sent the message';
      log(error_message);
      socket.emit('invite_response', {
@@ -303,7 +303,7 @@ or
      }
 
      var requested_user = payload.requested_user;
-     if('undefined' === typeof requested_user || !requested_user){
+     if(('undefined' === typeof requested_user) || !requested_user){
        var error_message = 'invite didn\'t specify a requested user, command aborted';
        log(error_message);
        socket.emit('invite_response', {
@@ -318,7 +318,7 @@ or
 
     /* Make sure the user being invited is in the room */
     if(!roomObject.sockets.hasOwnProperty(requested_user)){
-      var error_message = 'invite requested a user that wasn\'t in the room specify a requested user, command aborted';
+      var error_message = 'invite requested a user that wasn\'t in the room, command aborted';
       log(error_message);
       socket.emit('invite_response', {
                                             result: 'fail',
@@ -376,7 +376,7 @@ or
 
   /* Check to make sure a payload was sent */
 
-     if('undefined' === typeof payload || !payload){
+     if(('undefined' === typeof payload) || !payload){
        var error_message = 'uninvite had no payload, command aborted';
        log(error_message);
        socket.emit('uninvite_response', {
@@ -388,7 +388,7 @@ or
 
   /* Check that the message can be traced to a username */
      var username = players[socket.id].username;
-     if('undefined' === typeof username || !username){
+     if(('undefined' === typeof username) || !username){
        var error_message = 'uninvite can\'t identify who sent the message';
        log(error_message);
        socket.emit('uninvite_response', {
@@ -399,7 +399,7 @@ or
        }
 
        var requested_user = payload.requested_user;
-       if('undefined' === typeof requested_user || !requested_user){
+       if(('undefined' === typeof requested_user) || !requested_user){
          var error_message = 'uninvite didn\'t specify a requested user, command aborted';
          log(error_message);
          socket.emit('uninvite_response', {
@@ -463,7 +463,7 @@ or
 
     /* Check to make sure a payload was sent */
 
-       if('undefined' === typeof payload || !payload){
+       if(('undefined' === typeof payload) || !payload){
          var error_message = 'game_start had no payload, command aborted';
          log(error_message);
          socket.emit('game_start_response', {
@@ -475,7 +475,7 @@ or
 
     /* Check that the message can be traced to a username */
        var username = players[socket.id].username;
-       if('undefined' === typeof username || !username){
+       if(('undefined' === typeof username) || !username){
          var error_message = 'game_start can\'t identify who sent the message';
          log(error_message);
          socket.emit('game_start_response', {
@@ -487,7 +487,7 @@ or
 
 /* Check to make sure that a person was specified to start a game with */
          var requested_user = payload.requested_user;
-         if('undefined' === typeof requested_user || !requested_user){
+         if(('undefined' === typeof requested_user) || !requested_user){
            var error_message = 'uninvite didn\'t specify a requested user, command aborted';
            log(error_message);
            socket.emit('uninvite_response', {
@@ -555,7 +555,7 @@ or
 
       /* Check to make sure a payload was sent */
 
-         if('undefined' === typeof payload || !payload){
+         if(('undefined' === typeof payload) || !payload){
            var error_message = 'play_token had no payload, command aborted';
            log(error_message);
            socket.emit('play_token_response', {
@@ -567,7 +567,7 @@ or
 
       /* Check that the player has previously registered */
          var player = players[socket.id];
-         if('undefined' === typeof player || !player){
+         if(('undefined' === typeof player) || !player){
            var error_message = 'server doesn\'t recognize you, try going back one screen';
            log(error_message);
            socket.emit('play_token_response', {
@@ -579,7 +579,7 @@ or
 
 /* Check that the message can be traced to a username and there is a game in progress */
            var username = players[socket.id];
-           if('undefined' === typeof username || !username){
+           if(('undefined' === typeof username) || !username){
              var error_message = 'play_token can\'t identify who sent the message';
              log(error_message);
              socket.emit('play_token_response', {
@@ -590,7 +590,7 @@ or
              }
 
              var game_id = players[socket.id].room;
-             if('undefined' === typeof game_id || !game_id){
+             if(('undefined' === typeof game_id) || !game_id){
                var error_message = 'play_token can\'t find your game board';
                log(error_message);
                socket.emit('play_token_response', {
@@ -602,7 +602,7 @@ or
 
 /* Check that the row and column are present and valid */
                var row = payload.row;
-               if('undefined' === typeof row || row < 0 || row > 7){
+               if(('undefined' === typeof row) || row < 0 || row > 7){
                  var error_message = 'play_token didn\'t specify a valid row, command aborted';
                  log(error_message);
                  socket.emit('play_token_response', {
@@ -613,7 +613,7 @@ or
                  }
 
                  var column = payload.column;
-                 if('undefined' === typeof column || column < 0 || column > 7){
+                 if(('undefined' === typeof column) || column < 0 || column > 7){
                    var error_message = 'play_token didn\'t specify a valid column, command aborted';
                    log(error_message);
                    socket.emit('play_token_response', {
