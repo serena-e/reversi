@@ -23,6 +23,13 @@ if('undefined' == typeof chat_room || !chat_room){
   chat_room = 'lobby';
 }
 
+/* SOLO PLAY */
+var gameType = getURLParameters('gameType');
+
+
+function soloPlay(){
+  window.location.href = 'solo-game.html?username='+username+'&gameType=solo';
+}
 
 /* Connect to the socket server */
 var socket = io.connect();
