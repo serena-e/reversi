@@ -215,7 +215,7 @@ socket.on('send_message_response',function(payload){
     alert(payload.message);
     return;
   }
-  var newHTML = '<p><b>'+payload.username+' says: </b> '+payload.message+'</p>';
+  var newHTML = '<p><span class="chat-name">'+payload.username+': </span> '+payload.message+'</p>';
   var newNode = $(newHTML);
   newNode.hide();
   $('#messages').prepend(newNode);
@@ -263,7 +263,7 @@ $(function(){
   console.log('*** Client Log Message: \'join_room\' payload: '+JSON.stringify(payload));
   socket.emit('join_room',payload);
 
-  $('#quit').append('<a href="lobby.html?username='+username+'" class="btn btn-lg active" role="button" aria-pressed="true">Quit</a>');
+  $('#quit').append('<a href="lobby.html?username='+username+'" class="btn btn-lg active btn-quit" role="button" aria-pressed="true">Quit</a>');
 
 });
 
@@ -311,8 +311,8 @@ else {
   return;
 }
 
-$('#my_color').html('<h3 id="#my_color">I am '+my_color+'</h3>');
-$('#my_color').append('<h4>It is '+payload.game.whose_turn+'\'s turn. Elapsed time <span id="elapsed"></span></h4>');
+$('#my_color').html('<h2 id="#my_color">I am '+my_color+'</h2>');
+$('#my_color').append('<h3>It is <span class="turn-bold">'+payload.game.whose_turn+'\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
 
 clearInterval(interval_timer);
 interval_timer = setInterval(function(last_time){

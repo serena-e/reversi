@@ -3,10 +3,10 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 54 54" xml:space="preserve" width="64" height="64">
 <style type="text/css">
-	.st0{fill:#333333;stroke:#555555;stroke-width:2.16;stroke-miterlimit:10;}
+	.st0{fill:#111111;stroke:#000000;stroke-width:2.16;stroke-miterlimit:10;}
 	.st1{fill:none;}
-	.st2{fill:#FF6D66;}
-	.st3{fill:#FF8A80;}
+	.st2{fill:#d32f2f;}
+	.st3{fill:#f44336;}
 </style>
 <circle class="st0" cx="27" cy="27" r="24.85"/>
 <g>
