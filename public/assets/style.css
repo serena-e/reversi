@@ -83,12 +83,12 @@ input:focus::placeholder {
 }
 
 .btn-index-play {
-  background-color: #009faf;
+  background-color: #7986cb;
   border: none;
 }
 
 .btn-index-play:hover {
-  background-color: #007f8c;
+  background-color: #5c6bc0;
   border: none;
 }
 
@@ -241,12 +241,16 @@ span.turn-bold {
   font-weight: 500;
 }
 
-span#elapsed {
+span.my-turn {
     color: #000;
     background-color: #fff;
     padding: 5px;
     border-radius: 5px;
     margin-left: 3px;
+    font-weight: 400;
+}
+
+span#elapsed {
     font-weight: 400;
 }
 
@@ -259,11 +263,13 @@ span#elapsed {
   margin-left: 10px;
   background-color: #7986cb;
   border-color: #7986cb;
+  color: #fff;
 }
 
 .chat-btn:hover {
   background-color: #5c6bc0;
   border-color: #5c6bc0;
+  color: #fff;
 }
 
 .form-inline {

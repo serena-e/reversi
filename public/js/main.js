@@ -318,8 +318,59 @@ else {
   return;
 }
 
+/*
+if(my_color == 'black')
+
+var my_color_name = ' ';
+var whose_turn_name = ' ';
+
+if(my_color == 'white'){
+  my_color_name = 'whale';
+}
+if(my_color == 'black'){
+  my_color_name = 'squid';
+}
+
+
+if(payload.game.whose_turn == 'white'){
+  payload.game.whose_turn_name = 'whale';
+}
+if(payload.game.whose_turn == 'black'){
+  payload.game.whose_turn_name = 'squid';
+}
+*/
+
+if(my_color == 'black'){
+  $('#my_color').html('<h2 id="#my_color">I am Squid</h2>');
+}
+else{
+  $('#my_color').html('<h2 id="#my_color">I am Whale</h2>');
+}
+
+if((payload.game.whose_turn == 'black') && (my_color == 'black')){
+  $('#my_color').append('<h3><span class="turn-bold my-turn">It is my turn.</span> Elapsed time <span id="elapsed"></span></h3>');
+}
+else if((payload.game.whose_turn == 'black') && (my_color == 'white')){
+  $('#my_color').append('<h3>It is <span class="turn-bold ">Squid\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
+}
+else if((payload.game.whose_turn == 'white') && (my_color == 'white')){
+  $('#my_color').append('<h3><span class="turn-bold my-turn">It is my turn.</span> Elapsed time <span id="elapsed"></span></h3>');
+}
+else if((payload.game.whose_turn == 'white') && (my_color == 'black')){
+  $('#my_color').append('<h3>It is <span class="turn-bold">Whale\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
+}
+
+
+
+
+
+
+
+
+/*
 $('#my_color').html('<h2 id="#my_color">I am '+my_color+'</h2>');
 $('#my_color').append('<h3>It is <span class="turn-bold">'+payload.game.whose_turn+'\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
+*/
 
 clearInterval(interval_timer);
 interval_timer = setInterval(function(last_time){
