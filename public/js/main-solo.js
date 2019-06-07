@@ -1,7 +1,7 @@
 /* This code is a collab between Christine Benedict and Serena Epstein, June 2019 */
 
 
-/* GAME LOGIC */
+// Board initial setup
 var old_board = [
                     [' ',' ',' ',' ',' ',' ',' ',' '],
                     [' ',' ',' ',' ',' ',' ',' ',' '],
@@ -14,10 +14,46 @@ var old_board = [
                 ];
 
 var my_color = 'black';
+var blacksum = 2;
+var whitesum = 2;
 var interval_timer;
 var d = new Date();
 
+var computerOptions = [];
+var computerMoveTimeout;
 
+
+// Create initial game state
+var game = {
+  whose_turn: 'black',
+  board: JSON.parse(JSON.stringify(old_board)),
+  legal_moves: calculate_valid_moves('b',old_board),
+  last_move_time: d.getTime(),
+}
+
+// Once things are drawn, set the text for my color
+$('#my_color').html('<h3><span class="turn-bold my-turn">It is my turn.</span></h3>');
+
+function intervalTimer(last_move_time){
+interval_timer = setInterval(function(last_time){
+  return function (){
+    // Do the work of updating the UI
+    var d = new Date();
+    var elapsedmilli = d.getTime() - last_time;
+    var minutes = Math.floor(elapsedmilli / (60 * 1000));
+    var seconds = Math.floor((elapsedmilli % (60 * 1000))/ 1000);
+
+    if(seconds < 10){
+    $('#elapsed').html(`${minutes}:0${seconds}`);
+    }
+    else{
+    $('#elapsed').html(`${minutes}:${seconds}`);
+    }
+
+  }}(last_move_time), 1000);
+}
+
+// Function declarations
 function check_line_match(who, dr, dc, r, c, board){
   if(board[r][c] === who){
     return true;
@@ -95,8 +131,15 @@ function calculate_valid_moves(who, board){
         ss = valid_move(who, 1, 0,row,column,board);
         se = valid_move(who, 1, 1,row,column,board);
 
+        $(`#${row}_${column}`).removeClass('hovered_over');
+
         if(nw || nn || ne || ww || ee || sw || ss || se){
           valid[row][column] = who;
+          if(who === 'w'){
+            computerOptions.push({row: row, column: column});
+          } else if(who ==='b'){
+            $(`#${row}_${column}`).addClass('hovered_over');
+          }
         }
       }
     }
@@ -142,20 +185,96 @@ function flip_board(who, row, column, board){
   flip_line(who, 1, 1,row,column,board);
 }
 
+function updateBoardImages(){
 
-var game = {
-  whose_turn: 'black',
-  board: old_board,
-  legal_moves: calculate_valid_moves('b',old_board),
-  last_move_time: d.getTime(),
+  blacksum = 0;
+  whitesum = 0;
+
+  for(let row = 0; row < 8; row++){
+    for(let column = 0; column < 8; column++){
+
+      // End of the player's move, add one to the count
+      if(game.board[row][column] == 'b'){
+        blacksum = blacksum+1;
+      }
+      if(game.board[row][column] == 'w'){
+        whitesum = whitesum+1;
+      }
+
+
+      // This is a good time to also update the hover based on legal moves
+      // if(game.board[row][column] == ' ' && game.legal_moves[row][column] === my_color.substr(0,1)){
+      //   $(`#${row}_${column}`).addClass('hovered_over');
+      // } else {
+      //   $(`#${row}_${column}`).removeClass('hovered_over');
+      // }
+
+      if(old_board[row][column] != game.board[row][column]){
+        if(old_board[row][column] == ' ' && game.board[row][column] == 'b'){
+          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/blacktoken.svg" alt="black square"/>').off('click').removeClass('hovered_over');
+        } else if(old_board[row][column] == ' ' && game.board[row][column] == 'w'){
+          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/whitetoken.svg" alt="white square"/>').off('click').removeClass('hovered_over');
+        } else if(old_board[row][column] == 'w' && game.board[row][column] == 'b'){
+          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/blacktoken.svg" alt="black square"/>')
+        } else if(old_board[row][column] == 'b' && game.board[row][column] == 'w'){
+          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/whitetoken.svg" alt="white square"/>');
+        } else {
+          $(`#${row}_${column}`).html('<img src="assets/images/error.svg" alt="error"/>');
+        }
+      }
+    }
+  }
+  old_board = JSON.parse(JSON.stringify(game.board));
 }
 
+// Check to see if the game is over
+function checkIfWinner(){
 
+  var row, column, winner;
+  var count = 0;
+  var black = 0;
+  var white = 0;
+  for(let row = 0; row < 8; row++){
+    for(let column = 0; column < 8; column++){
+      if(game.legal_moves[row][column] != ' '){
+        count++;
+      }
+      if(game.board[row][column] === 'b'){
+        black++;
+      }
+      if(game.board[row][column] === 'w'){
+        white++;
+      }
+    }
+  }
+
+  if(count == 0){
+    if(black === white){
+      winner = 'tie game';
+    } else if(black > white){
+      winner = 'black';
+    } else if(white > black){
+      winner = 'white';
+    } else {
+      winner = null
+    }
+  }
+
+  if (winner !== null && winner !== undefined){
+    $('#game_over').html('<h1>Game over</h1><h2>'+game.who_won+' won!</h2>');
+    $('#game_over').append('<a href="lobby.html?username='+winner+'" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Return to the lobby</a>');
+  }
+}
+
+// Place initial tokens and set up hover
 function setInitialSquares(){
   for(let row = 0; row < 8; row++){
-    for( let column = 0; column < 8; column ++){
+    for(let column = 0; column < 8; column ++){
       if(game.board[row][column] == ' '){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/emptytoken.svg" alt="empty square" /> ').addClass('hovered_over');
+        $(`#${row}_${column}`).html(`<img class="token-fade-in" src="assets/images/emptytoken.svg" onClick="clickASquare(${row},${column}); return false;" alt="empty square" />`);
+      }
+      if(game.board[row][column] == ' ' && game.legal_moves[row][column] === my_color.substr(0,1)){
+        $(`#${row}_${column}`).addClass('hovered_over');
       }
       if(game.board[row][column] == 'w'){
         $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/whitetoken.svg" alt="white square" /> ');
@@ -167,152 +286,88 @@ function setInitialSquares(){
 }
 
 
+function computersTurn(row, column){
 
-/* GAME INFO */
-$('#my_color').html('<h2 id="#my_color">I am '+my_color+'</h2>');
-$('#my_color').append('<h3>It is <span class="turn-bold">'+game.whose_turn+'\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
+    // Add move to board array
+    game.board[row][column] = 'w';
 
-clearInterval(interval_timer);
-interval_timer = setInterval(function(last_time){
-  return function (){
-    //Do the work of updating the UI
-    var d = new Date();
-    var elapsedmilli = d.getTime() - last_time;
-    var minutes = Math.floor(elapsedmilli / (60 * 1000));
-    var seconds = Math.floor((elapsedmilli % (60 * 1000))/ 1000);
+    // Flip tokens in the board array
+    flip_board('w', row, column, game.board);
 
-    if(seconds < 10){
-    $('#elapsed').html(minutes+':0'+seconds);
-    }
-    else{
-    $('#elapsed').html(minutes+':'+seconds);
-    }
+    // Place the appropriate token images
+    updateBoardImages();
 
-  }}(game.last_move_time), 1000);
 
-/* Animate changes to the board */
-var blacksum = 0;
-var whitesum = 0;
+    // End of the player's move, add one to the count
+    $('#blacksum').html(blacksum);
+    $('#whitesum').html(whitesum);
 
-var row, column;
 
+    // Check if winner
+    checkIfWinner();
+
+    // Change whose turn it is
+    game.whose_turn = 'black';
+    game.legal_moves = calculate_valid_moves('b', game.board);
+    game.last_move_time = d.getTime();
+    computerOptions = [];
+    $('#my_color').html('<h3><span class="turn-bold my-turn">It is my turn.</span></h3>');
+    clearInterval(interval_timer);
+    intervalTimer(game.last_move_time);
+    clearTimeout(computerMoveTimeout);
+}
+
+// Functionality for when a user clicks a square
 function clickASquare(row, column){
+
+  // Check to make sure it is the player's turn
   if(game.whose_turn === my_color){
+
+    // Check if valid move
     if(game.legal_moves[row][column] === my_color.substr(0,1)){
-      if(old_board[row][column] != game.board[row][column]){
-        if(old_board[row][column] == ' ' && game.board[row][column] == 'w'){
-          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/whitetoken.svg" alt="white square" />');
-        } else if(old_board[row][column] == ' ' && game.board[row][column] == 'b'){
-          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/blacktoken.svg" alt="black square" />');
-        } else if(old_board[row][column] == 'w' && game.board[row][column] == ' '){
-          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/emptytoken.svg" alt="empty square" />');
-        } else if(old_board[row][column] == 'b' && game.board[row][column] == ' '){
-          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/emptytoken.svg" alt="empty square" />');
-        } else if(old_board[row][column] == 'w' && game.board[row][column] == 'b'){
-          $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/blacktoken.svg" alt="black square" />');
-        } else if(old_board[row][column] == 'b' && game.board[row][column] == 'w'){
-          $(`#${row}_${column}`).html('<img class="token-fade-in"" src="assets/images/whitetoken.svg" alt="white square" />');
-        } else {
-          $(`#${row}_${column}`).html('<img src="assets/images/errortoken.svg" alt="error" />');
-        }
 
-        $(`#${row}_${column}`).off('click');
-      }
+      // Add move to board array
+      game.board[row][column] = 'b';
+
+      // Flip tokens in the board array
+      flip_board('b', row, column, game.board);
+
+      // Place the appropriate token images
+      updateBoardImages('b');
 
 
-      /* Check to see if the game is over */
-      var row,column;
-      var count = 0;
-      var black = 0;
-      var white = 0;
-      for(row = 0; row < 8; row++){
-      for(column = 0; column < 8; column++){
-          if(game.legal_moves[row][column] != ' '){
-            count++;
-          }
-          if(game.board[row][column] === 'b'){
-            black++;
-          }
-          if(game.board[row][column] === 'w'){
-            white++;
-          }
-        }
-      }
-      if(count == 0){
-
-        /* Send a game over message */
-        var winner = 'tie game';
-        if(black > white){
-          winner = 'black';
-        }
-        if(white > black){
-          winner = 'white';
-        }
-      }
-      }
-      }
-      }
-
-      for(row = 0; row < 8; row++){
-      for( column = 0; column < 8; column ++){
-      if(game.board[row][column] == 'b'){
-      blacksum++
-      }
-      if(game.board[row][column] == 'w'){
-      whitesum++
-      }
-
-
-      if(old_board[row][column] != game.board[row][column]){
-      if(old_board[row][column] == '?' && game.board[row][column] == ' '){
-        $(`#${row}_${column}`).html('<img class="" src="assets/images/emptytoken.svg" alt="empty square" />');
-      } else if(old_board[row][column] == 'w' && game.board[row][column] == 'w'){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/whitetoken.svg" alt="white square" />');
-      } else if(old_board[row][column] == 'b' && game.board[row][column] == 'b'){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/blacktoken.svg" alt="black square" />');
-      } else if(old_board[row][column] == ' ' && game.board[row][column] == 'w'){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/whitetoken.svg" alt="white square" />');
-      } else if(old_board[row][column] == ' ' && game.board[row][column] == 'b'){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/blacktoken.svg" alt="black square" />');
-      } else if(old_board[row][column] == 'w' && game.board[row][column] == ' '){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/emptytoken.svg" alt="empty square" />');
-      } else if(old_board[row][column] == 'b' && game.board[row][column] == ' '){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/emptytoken.svg" alt="empty square" />');
-      } else if(old_board[row][column] == 'w' && game.board[row][column] == 'b'){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/blacktoken.svg" alt="black square"/>');
-      } else if(old_board[row][column] == 'b' && game.board[row][column] == 'w'){
-        $(`#${row}_${column}`).html('<img class="token-fade-in" src="assets/images/whitetoken.svg" alt="white square"/>');
-      } else {
-        $(`#${row}_${column}`).html('<img src="assets/images/errortoken.svg" alt="error" />');
-      }
-
-      $(`#${row}_${column}`).off('click');
-
-      if(payload.game.whose_turn === my_color){
-        if(payload.game.legal_moves[row][column] === my_color.substr(0,1)){
-          $(`#${row}_${column}`).addClass('hovered_over');
-          $(`#${row}_${column}`).click(function(r,c){
-            return function(){
-              var payload = {};
-              payload.row = r;
-              payload.column = c;
-              payload.color = my_color;
-              console.log('*** Client Log Message: \'play token\' payload: '+JSON.stringify(payload));
-            };
-          }(row,column));
-        } else {
-          $(`#${row}_${column}`).removeClass('hovered_over');
-        }
-      }
-      }
-      }
-      }
+      // End of the player's move, add one to the count
       $('#blacksum').html(blacksum);
       $('#whitesum').html(whitesum);
 
-      old_board = game.board;
+
+      // Check if winner
+      checkIfWinner();
+
+      // Change whose turn it is
+      game.whose_turn = 'white';
+      game.legal_moves = calculate_valid_moves('w', game.board);
+      game.last_move_time = d.getTime();
+      $('#my_color').html('<h3>It is <span class="turn-bold ">Whale\'s turn</span>.</h3>');
+      clearInterval(interval_timer);
+      intervalTimer(game.last_move_time);
 
 
-      window.onload=function(){
-        setInitialSquares();
-      }
+      let computerMove = Math.floor(Math.random()*computerOptions.length);
+
+      console.log(computerOptions[computerMove].row, computerOptions[computerMove].column);
+
+      computerMoveTimeout = setTimeout(() => {
+        computersTurn(computerOptions[computerMove].row, computerOptions[computerMove].column)}, 3000
+      );
+    }
+  }
+}
+
+  window.onload=function(){
+    setInitialSquares();
+    $('#blacksum').html(blacksum);
+    $('#whitesum').html(whitesum);
+    intervalTimer(game.last_move_time);
+    $('#quit').append('<a href="index.html" class="btn btn-lg active btn-quit" role="button" aria-pressed="true">Quit</a>');
+  }

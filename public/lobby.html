@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,500,500i,700&display=swap" rel="stylesheet">
 
 
-    <title>Reversi game lobby</title>
+    <title>Reversi Game Lobby</title>
   </head>
   <body>
     <div class='container-fluid text-center'>
@@ -25,34 +25,33 @@
         <div class='col'>
           <!-- <img class='img-fluid' src='assets/images/top-splash.png' alt='reversi logo' /> -->
           <h1 class='index-title'>Lobby</h1>
-          <button class='btn btn-default btn-primary solo-btn' onClick='soloPlay(); return false;'>Solo Game</button>
         </div>
       </div>
 
-      <div class='row align-items-end' id='players'>
-        <div class='col-9 text-left'>
-          <h2>Players</h2>
-        </div>
-        <div class='col-3'>
-        </div>
-        <!-- This is where the new players go -->
-      </div>
-
-      <div class='row'>
-        <div class='col text-left'>
-          <h2>Messages</h2>
+      <div class='row justify-content-md-center'>
+        <div class='col-5 text-left'>
+          <h2 class='dark-title'>Messages</h2>
           <form class='form-inline' onsubmit='send_message(); reset(); return false;'>
               <label for='send_message_holder' class='col-form-label sr-only'>Enter message:</label>
               <input class='form-control mx-audo w-75' type='text' value='' id='send_message_holder' placeholder='Enter your chat message' autocomplete='off' />
             <button type='submit' class='btn btn-default chat-btn'><i class='fas fa-fish'></i>Send</button>
           </form>
+          <div id='messages' class='lobby-msg'></div>
         </div>
-      </div>
-      <div class='row'>
-        <div class='col text-left'>
-          <div id='messages'></div>
+        <div class='col-6 text-left'>
+        <div class='row text-right' id='players'>
+          <div class='col text-center'>
+            <h2 class='dark-title'>Players</h2>
+          </div>
+
+          <!-- This is where the new players go -->
         </div>
+</div>
       </div>
+
+
+      <footer class="page-footer font-small"> © 2019 <a href="http://serenae.com" alt="Serena's portfolio" target="_blank">Serena Epstein</a>. All rights reserved.</footer>
+
 
     </div>
 
