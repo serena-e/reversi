@@ -247,6 +247,8 @@ function checkIfWinner(){
       }
     }
   }
+  console.log('Checking for a winner. ', black, white, 'Count is '+count)
+
 
   if(count == 0){
     if(black === white){
@@ -261,8 +263,18 @@ function checkIfWinner(){
   }
 
   if (winner !== null && winner !== undefined){
-    $('#game_over').html('<h1>Game over</h1><h2>'+game.who_won+' won!</h2>');
-    $('#game_over').append('<a href="lobby.html?username='+winner+'" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Return to the lobby</a>');
+    // Tell me if I won
+    if(winner == 'black'){
+      $('#game_over').html('<h1>Game over</h1><h2>You won!</h2>');
+    }
+    else if(winner == 'white'){
+      $('#game_over').html('<h1>Game over</h1><h2>You lost :(</h2>');
+    }
+
+      $('#game_over').append('<a href="index.html" class="btn chat-btn" role="button" aria-pressed="true">Exit game</a>');
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -308,13 +320,16 @@ function computersTurn(row, column){
 
     // Change whose turn it is
     game.whose_turn = 'black';
-    game.legal_moves = calculate_valid_moves('b', game.board);
-    game.last_move_time = d.getTime();
+    game.legal_moves = JSON.parse(JSON.stringify(calculate_valid_moves('b', game.board)));
+    game.last_move_time = new Date().getTime();
     computerOptions = [];
     $('#my_color').html('<h3><span class="turn-bold my-turn">It is my turn.</span></h3>');
     clearInterval(interval_timer);
     intervalTimer(game.last_move_time);
     clearTimeout(computerMoveTimeout);
+
+    // Check if winner
+    checkIfWinner();
 }
 
 // Functionality for when a user clicks a square
@@ -346,20 +361,24 @@ function clickASquare(row, column){
 
       // Change whose turn it is
       game.whose_turn = 'white';
-      game.legal_moves = calculate_valid_moves('w', game.board);
-      game.last_move_time = d.getTime();
+      game.legal_moves = JSON.parse(JSON.stringify(calculate_valid_moves('w', game.board)));
+      game.last_move_time = new Date().getTime();
       $('#my_color').html('<h3>It is <span class="turn-bold ">Whale\'s turn</span>.</h3>');
       clearInterval(interval_timer);
       intervalTimer(game.last_move_time);
 
+      // Check if winner
+      checkIfWinner();
 
       let computerMove = Math.floor(Math.random()*computerOptions.length);
 
       console.log(computerOptions[computerMove].row, computerOptions[computerMove].column);
 
-      computerMoveTimeout = setTimeout(() => {
-        computersTurn(computerOptions[computerMove].row, computerOptions[computerMove].column)}, 3000
-      );
+      if(!checkIfWinner()){
+        computerMoveTimeout = setTimeout(() => {
+          computersTurn(computerOptions[computerMove].row, computerOptions[computerMove].column)}, 3000
+        );
+      }
     }
   }
 }

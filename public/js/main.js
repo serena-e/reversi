@@ -120,7 +120,7 @@ if(dom_elements.length != 0){
 }
 
 /* Manage the message that a player has left ... added italics */
-var newHTML = '<p><i>'+payload.username+' has left the room</i></p>';
+var newHTML = '<p class="status-msg"><i>'+payload.username+' has left the room</i></p>';
 var newNode = $(newHTML);
 newNode.hide();
 $('#messages').prepend(newNode);
@@ -320,10 +320,10 @@ else {
 
 // Label player as 'squid' or 'whale'
 if(my_color == 'black'){
-  $('#my_color').html('<h2 id="#my_color">I am Squid</h2>');
+  $('#my_color').html('<h2 id="my_color">I am Squid</h2>');
 }
 else{
-  $('#my_color').html('<h2 id="#my_color">I am Whale</h2>');
+  $('#my_color').html('<h2 id="my_color">I am Whale</h2>');
 }
 
 // Tell me when it's my turn
