@@ -23,6 +23,13 @@ if('undefined' == typeof chat_room || !chat_room){
   chat_room = 'lobby';
 }
 
+/* SOLO PLAY */
+var gameType = getURLParameters('gameType');
+
+
+function soloPlay(){
+  window.location.href = 'solo-game.html?username='+username+'&gameType=solo';
+}
 
 /* Connect to the socket server */
 var socket = io.connect();
@@ -60,10 +67,10 @@ if(dom_elements.length == 0){
 
   nodeA.addClass('w-100');
 
-  nodeB.addClass('col-9 text-right');
-  nodeB.append('<h4>'+payload.username+'</h4>');
+  nodeB.addClass('col text-right');
+  nodeB.append('<h4 class="dark-title">'+payload.username+'</h4>');
 
-  nodeC.addClass('col3 text-left');
+  nodeC.addClass('col text-left');
   var buttonC = makeInviteButton(payload.socket_id);
   nodeC.append(buttonC);
 
@@ -85,7 +92,7 @@ else {
 }
 
 /* Manage the message that a new player has joined ... added italics*/
-var newHTML = '<p><i>'+payload.username+' just entered the room</i></p>';
+var newHTML = '<p class="status-msg"><i>'+payload.username+' just entered the room</i></p>';
 var newNode = $(newHTML);
 newNode.hide();
 $('#messages').prepend(newNode);
@@ -113,7 +120,7 @@ if(dom_elements.length != 0){
 }
 
 /* Manage the message that a player has left ... added italics */
-var newHTML = '<p><i>'+payload.username+' has left the room</i></p>';
+var newHTML = '<p class="status-msg"><i>'+payload.username+' has left the room</i></p>';
 var newNode = $(newHTML);
 newNode.hide();
 $('#messages').prepend(newNode);
@@ -311,8 +318,34 @@ else {
   return;
 }
 
+// Label player as 'squid' or 'whale'
+if(my_color == 'black'){
+  $('#my_color').html('<h2 id="my_color">I am Squid</h2>');
+}
+else{
+  $('#my_color').html('<h2 id="my_color">I am Whale</h2>');
+}
+
+// Tell me when it's my turn
+if((payload.game.whose_turn == 'black') && (my_color == 'black')){
+  $('#my_color').append('<h3><span class="turn-bold my-turn">It is my turn.</span> Elapsed time <span id="elapsed"></span></h3>');
+}
+else if((payload.game.whose_turn == 'black') && (my_color == 'white')){
+  $('#my_color').append('<h3>It is <span class="turn-bold ">Squid\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
+}
+else if((payload.game.whose_turn == 'white') && (my_color == 'white')){
+  $('#my_color').append('<h3><span class="turn-bold my-turn">It is my turn.</span> Elapsed time <span id="elapsed"></span></h3>');
+}
+else if((payload.game.whose_turn == 'white') && (my_color == 'black')){
+  $('#my_color').append('<h3>It is <span class="turn-bold">Whale\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
+}
+
+
+/* DON'S ORIGINAL CODE */
+/*
 $('#my_color').html('<h2 id="#my_color">I am '+my_color+'</h2>');
 $('#my_color').append('<h3>It is <span class="turn-bold">'+payload.game.whose_turn+'\'s turn</span>. Elapsed time <span id="elapsed"></span></h3>');
+*/
 
 clearInterval(interval_timer);
 interval_timer = setInterval(function(last_time){
@@ -447,7 +480,20 @@ socket.on('game_over',function(payload){
     return;
   }
 
-  /* Jump to a new page */
-  $('#game_over').html('<h1>Game over</h1><h2>'+payload.who_won+' won!</h2>');
-  $('#game_over').append('<a href="lobby.html?username='+username+'" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Return to the lobby</a>');
+  // Tell me if I won
+  if((payload.who_won == 'black') && (my_color == 'black')){
+    $('#game_over').html('<h1>Game over</h1><h2>You won!</h2>');
+  }
+  else if((payload.who_won == 'black') && (my_color == 'white')){
+    $('#game_over').html('<h1>Game over</h1><h2>You lost.</h2>');
+  }
+  else if((payload.payload.who_won == 'white') && (my_color == 'white')){
+    $('#game_over').html('<h1>Game over</h1><h2>You won!</h2>');
+  }
+  else if((payload.payload.who_won == 'white') && (my_color == 'black')){
+    $('#game_over').html('<h1>Game over</h1><h2>You lost :(</h2>');
+  }
+
+  // $('#game_over').html('<h1>Game over</h1><h2>'+payload.who_won+' won!</h2>');
+  $('#game_over').append('<a href="lobby.html?username='+username+'" class="btn chat-btn" role="button" aria-pressed="true">Return to the lobby</a>');
 });

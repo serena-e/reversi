@@ -744,10 +744,10 @@ function check_line_match(who,dr,dc,r,c,board){
     return false;
   }
 
-  if( (r+dr < 0) || (r+dr > 7) ){
+  if ( (r+dr < 0) || (r+dr > 7) ){
     return false;
   }
-  if( (c+dc < 0) || (c+dc > 7) ){
+  if ( (c+dc < 0) || (c+dc > 7) ){
     return false;
   }
   return check_line_match(who,dr,dc,r+dr,c+dc,board);
@@ -763,10 +763,10 @@ function valid_move(who,dr,dc,r,c,board){
   if(who === 'b'){
     other = 'w';
   }
-  else if(who === 'w'){
+  else if (who === 'w'){
     other = 'b';
   }
-  else{
+  else {
     log('Houston, we have a color problem: '+who);
     return false;
   }
